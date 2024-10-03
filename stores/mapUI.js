@@ -20,7 +20,7 @@ export const useMapUIStore = defineStore('mapUI', () => {
   }
 
   function initializeMap(mapInstance, drawInstance) {
-    if (map.value) return // 防止重复初始化
+    if (map.value) return
 
     map.value = mapInstance
     draw.value = drawInstance

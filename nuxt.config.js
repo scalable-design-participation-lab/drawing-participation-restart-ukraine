@@ -10,7 +10,11 @@ module.exports = defineNuxtConfig({
   },
   extends: ['@nuxt/ui-pro'],
 
-  modules: ['@pinia/nuxt', '@nuxt/ui'],
+  modules: ['@pinia/nuxt', '@nuxt/ui', 'nuxt-mapbox'],
+
+  mapbox: {
+    accessToken: process.env.MAPBOX_ACCESS_TOKEN,
+  },
 
   components: [
     {
