@@ -140,8 +140,13 @@
       </div>
     </header>
 
-    <!-- Add popups -->
-    <MenuModal v-model="showMenuModal" @select="handleMenuSelect" />
+    <!-- Update MenuModal to GeneralizedMenuModal -->
+    <GeneralizedMenuModal
+      v-model="showMenuModal"
+      :menu-items="menuItems"
+      :modal-config="menuModalConfig"
+      @select="handleMenuSelect"
+    />
   </div>
 </template>
 <script setup lang="ts">
@@ -150,14 +155,49 @@ import { ref, computed } from 'vue'
 // Add new refs for modals
 const showMenuModal = ref(false)
 
-// Add menu select handler
+// Add menu items configuration
+const menuItems = computed(
+  () =>
+    props.menuConfig?.items || [
+      {
+        label: 'About',
+        action: 'about',
+        icon: 'i-heroicons-information-circle',
+        link: '/about',
+      },
+      {
+        label: 'Help',
+        action: 'help',
+        icon: 'i-heroicons-question-mark-circle',
+      },
+      {
+        label: 'Settings',
+        action: 'settings',
+        icon: 'i-heroicons-cog-6-tooth',
+      },
+    ],
+)
+
+const menuModalConfig = computed(
+  () =>
+    props.menuConfig?.modalConfig || {
+      width: 'w-96',
+    },
+)
+
+// Update menu select handler
 const handleMenuSelect = (action: string) => {
+  if (props.menuConfig?.onSelect) {
+    props.menuConfig.onSelect(action)
+    return
+  }
+
   switch (action) {
     case 'help':
-      // Add help logic
+      // Default help logic
       break
     case 'settings':
-      // Add settings logic
+      // Default settings logic
       break
   }
 }
@@ -202,6 +242,22 @@ const props = defineProps({
     type: String,
     default: 'rounded',
     validator: (value) => ['rounded', 'rectangular'].includes(value),
+  },
+  menuConfig: {
+    type: Object as PropType<{
+      items: Array<{
+        label: string
+        action: string
+        icon?: string
+        link?: string
+        color?: string
+        variant?: string
+        class?: string
+      }>
+      modalConfig?: Object
+      onSelect?: (action: string) => void
+    }>,
+    default: () => ({}),
   },
 })
 

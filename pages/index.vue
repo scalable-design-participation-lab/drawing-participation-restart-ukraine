@@ -59,6 +59,7 @@ const isMapBlurred = computed(() => mapUIStore.showRegistration)
 const showDownloadPopup = ref(false)
 const showOnboarding = ref(true)
 const showRegistration = ref(false)
+const showAboutPopup = ref(false)
 
 const handleDownload = async (options: {
   dataType: string
@@ -115,6 +116,46 @@ const handleShowRegistration = () => {
 const handleCloseRegistration = () => {
   showRegistration.value = false
 }
+
+const menuConfig = {
+  items: [
+    {
+      label: 'About',
+      action: 'about',
+      icon: 'i-heroicons-information-circle',
+      color: 'primary',
+    },
+    {
+      label: 'Help',
+      action: 'help',
+      icon: 'i-heroicons-question-mark-circle',
+      variant: 'outline',
+    },
+    {
+      label: 'Settings',
+      action: 'settings',
+      icon: 'i-heroicons-cog-6-tooth',
+      class: 'custom-button-class',
+    },
+  ],
+  modalConfig: {
+    width: 'w-96',
+    overlayClass: 'backdrop-blur-sm',
+  },
+  onSelect: (action: string) => {
+    switch (action) {
+      case 'about':
+        navigateTo('/about')
+        break
+      case 'help':
+        showAboutPopup.value = true
+        break
+      case 'settings':
+        // Custom settings logic
+        break
+    }
+  },
+}
 </script>
 
 <template>
@@ -126,7 +167,7 @@ const handleCloseRegistration = () => {
       :show-comment-icons="false"
     />
     <GeneralizedHeader
-      class="z-20"
+      :menu-config="menuConfig"
       :left-items="leftItems"
       :right-items="rightItems"
       logo-src="/neu-logo.svg"
@@ -148,6 +189,7 @@ const handleCloseRegistration = () => {
       @click.self="mapUIStore.showRegistration = true"
     ></div>
     <Teleport to="body">
+      <AboutPopup v-model="showAboutPopup" />
       <DownloadModalHurtoma
         v-model="showDownloadPopup"
         @download="handleDownload"
