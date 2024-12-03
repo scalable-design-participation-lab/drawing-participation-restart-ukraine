@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useMapUIStore } from '../stores/mapUI'
 
 // Map store
 const mapUIStore = useMapUIStore()
 const { setMapType } = mapUIStore
 const currentMapType = ref('vector')
+const isLoading = ref(true)
 
 const leftItems = ref([
   {
@@ -100,46 +101,70 @@ const handleShowRegistration = () => {
 const handleCloseRegistration = () => {
   showRegistration.value = false
 }
+
+// Initialize app
+const initializeApp = async () => {
+  try {
+    // Simulate loading time for map initialization
+    await new Promise((resolve) => setTimeout(resolve, 2000))
+    isLoading.value = false
+  } catch (error) {
+    console.error('Error initializing app:', error)
+    isLoading.value = false
+  }
+}
+
+// Initialize on mount
+onMounted(() => {
+  initializeApp()
+})
 </script>
 
 <template>
   <div class="relative">
-    <SideBar class="z-30" />
-    <BackgroundMap
-      :class="{ 'filter blur-md': isMapBlurred }"
-      :show-all-plus-icons="true"
-      :show-comment-icons="false"
-    />
-    <GeneralizedHeader
-      class="z-20"
-      :left-items="leftItems"
-      :right-items="rightItems"
-      logo-src="/restart-logo-icon.svg"
-      logo-alt="Restart Agency Logo"
-      logo-link="https://www.restartfuture.org/"
-    />
-    <GeneralizedFooter class="z-20" />
-    <OnboardingModal
-      :is-visible="showOnboarding"
-      @show-registration="handleShowRegistration"
-    />
-    <RegistrationModal
-      :is-visible="showRegistration"
-      @close="handleCloseRegistration"
-    />
-    <div
-      v-if="isMapBlurred"
-      class="absolute inset-0 bg-black bg-opacity-50 z-40"
-      @click.self="mapUIStore.showRegistration = true"
-    ></div>
-    <Teleport to="body">
-      <DownloadModalHurtoma
-        v-model="showDownloadModal"
-        @download="handleDownload"
+    <!-- Loading Screen -->
+    <LoadingScreen v-if="isLoading" />
+
+    <!-- Main Content -->
+    <div v-show="!isLoading">
+      <SideBar class="z-30" />
+      <BackgroundMap
+        :class="{ 'filter blur-md': isMapBlurred }"
+        :show-all-plus-icons="true"
+        :show-comment-icons="false"
       />
-    </Teleport>
+      <GeneralizedHeader
+        class="z-20"
+        :left-items="leftItems"
+        :right-items="rightItems"
+        logo-src="/restart-logo-icon.svg"
+        logo-alt="Restart Agency Logo"
+        logo-link="https://www.restartfuture.org/"
+      />
+      <GeneralizedFooter class="z-20" />
+      <OnboardingModal
+        :is-visible="showOnboarding"
+        @show-registration="handleShowRegistration"
+      />
+      <RegistrationModal
+        :is-visible="showRegistration"
+        @close="handleCloseRegistration"
+      />
+      <div
+        v-if="isMapBlurred"
+        class="absolute inset-0 bg-black bg-opacity-50 z-40"
+        @click.self="mapUIStore.showRegistration = true"
+      ></div>
+      <Teleport to="body">
+        <DownloadModalHurtoma
+          v-model="showDownloadModal"
+          @download="handleDownload"
+        />
+      </Teleport>
+    </div>
   </div>
 </template>
+
 <style scoped>
 .blur-md {
   filter: blur(8px);
