@@ -1,6 +1,6 @@
 <template>
   <div
-    class="fixed inset-0 flex items-center justify-center bg-white dark:bg-gray-900 z-50"
+    class="fixed inset-0 flex items-center justify-center bg-zinc-100 dark:bg-zinc-950 z-50"
   >
     <div class="text-center">
       <UIcon
