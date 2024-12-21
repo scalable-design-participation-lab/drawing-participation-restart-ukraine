@@ -5,13 +5,13 @@
   >
     <template #header>
       <h3 class="text-xl md:text-2xl font-semibold text-center">
-        Ласкаво просимо до Гуртома́!
+        Ласкаво просимо до Гуртомá
       </h3>
     </template>
 
     <div class="space-y-8 px-6">
       <p class="leading-tight">
-        Гуртома́ — платформа, яка допомагає змінювати українські міста на краще.
+        Гуртомá — платформа, яка допомагає змінювати українські міста на краще.
       </p>
 
       <div class="space-y-3 leading-tight">

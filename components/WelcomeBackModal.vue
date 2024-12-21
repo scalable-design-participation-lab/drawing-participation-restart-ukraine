@@ -3,7 +3,7 @@
     <UCard class="dark:bg-zinc-950">
       <template #header>
         <div class="text-center">
-          <h3 class="text-xl font-semibold">Ласкаво просимо!</h3>
+          <h3 class="text-xl font-semibold">Ласкаво просимо</h3>
         </div>
       </template>
 
