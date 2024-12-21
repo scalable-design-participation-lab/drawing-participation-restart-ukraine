@@ -97,7 +97,7 @@
       <a href="/" class="hover:underline">Головна</a>
       <a href="/about/" class="hover:underline">Про нас</a>
       <a href="/map/" class="hover:underline">Результати</a>
-      <!-- <a href="mailto:hurtoma@drawing-participation.org" class="hover:underline">Підтримка</a> -->
+      <a href="mailto:hurtoma@drawing-participation.org" class="hover:underline">Підтримка</a>
       </div>
     </div>
   </div>
